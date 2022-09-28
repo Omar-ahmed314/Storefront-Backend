@@ -1,0 +1,19 @@
+{
+    "defaultEnv": "dev",
+    "dev": {
+        "driver": "pg",
+        "host": "localhost",
+        "port": 5000,
+        "database": "store_front",
+        "user": "postgres",
+        "password": "password123"
+    },
+    "test": {
+        "driver": "pg",
+        "host": "localhost",
+        "port": 5000,
+        "database": "store_front_test",
+        "user": "postgres",
+        "password": "password123"
+    }
+}
