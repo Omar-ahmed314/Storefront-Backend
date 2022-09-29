@@ -43,4 +43,28 @@ export default class Product {
             throw new Error(`Cannot create new product: error ${error}`);
         }
     }
+
+    async edit(Product: product): Promise<product> {
+        try {
+            const connection = await Client.connect();
+            const sql = 'UPDATE product_table SET title = ($1) AND price = ($2) AND category = ($3) WHERE id = ($4)';
+            const result = await connection.query(sql, [Product.title, Product.price, Product.category, Product.id]);
+            connection.release();
+            return result.rows[0];
+        } catch (error) {
+            throw new Error(`Cannot create new product: error ${error}`);
+        }
+    }
+
+    async delete(id: number): Promise<product> {
+        try {
+            const connection = await Client.connect();
+            const sql = 'DELETE FROM product_table WHERE id = ($1)';
+            const result = await connection.query(sql, [id]);
+            connection.release();
+            return result.rows[0];
+        } catch (error) {
+            throw new Error(`Cannot create new product: error ${error}`);
+        }
+    }
 }
