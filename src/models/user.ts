@@ -20,7 +20,7 @@ export default class User {
         }
     }
 
-    async show(id: string): Promise<user> {
+    async show(id: number): Promise<user> {
         try {
             const connection = await Client.connect();
             const sql = 'SELECT * FROM user_table WHERE id = ($1)';
@@ -35,7 +35,7 @@ export default class User {
     async create(User: user): Promise<user> {
         try {
             const connection = await Client.connect();
-            const sql = 'INSERT INTO user_table (first_name, last_name, password) VALUES (($1), ($2), ($3))';
+            const sql = 'INSERT INTO user_table (first_name, last_name, password) VALUES (($1), ($2), ($3)) RETURNING *';
             const result = await connection.query(sql, [User.first_name, User.last_name, User.password]);
             connection.release();
             return result.rows[0];
@@ -47,7 +47,7 @@ export default class User {
     async edit(User: user): Promise<user> {
         try {
             const connection = await Client.connect();
-            const sql = 'UPDATE user_table SET first_name = ($1) AND last_name = ($2) AND password = ($3) WHERE id = ($4)';
+            const sql = 'UPDATE user_table SET first_name = ($1), last_name = ($2),  password = ($3) WHERE id = ($4) RETURNING *';
             const result = await connection.query(sql, [User.first_name, User.last_name, User.password, User.id]);
             connection.release();
             return result.rows[0];
@@ -56,7 +56,7 @@ export default class User {
         }
     }
 
-    async delete(id: string): Promise<user> {
+    async delete(id: number): Promise<user> {
         try {
             const connection = await Client.connect();
             const sql = 'DELETE FROM user_table WHERE id = ($1)';
@@ -65,6 +65,18 @@ export default class User {
             return result.rows[0];
         } catch (error) {
             throw new Error(`Cannot delete the user: error ${error}`);
+        }
+    }
+
+    async deleteAll(): Promise<user> {
+        try {
+            const connection = await Client.connect();
+            const sql = 'DELETE FROM user_table;';
+            const result = await connection.query(sql);
+            connection.release();
+            return result.rows[0];
+        } catch (error) {
+            throw new Error(`Cannot delete all the users: error ${error}`);
         }
     }
 }

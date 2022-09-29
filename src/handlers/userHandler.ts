@@ -17,7 +17,7 @@ const index = async (req : Request, res: Response) => {
 
 const show = async (req : Request, res: Response) => {
     try {
-        const data = await userModel.show(req.params.id);
+        const data = await userModel.show(req.params.id as unknown as number);
         res.status(200);
         res.json(data);
     } catch (error) {
@@ -61,7 +61,7 @@ const edit = async (req: Request, res: Response) => {
 
 const _delete = async (req: Request, res: Response) => {
     try {
-        const data = await userModel.delete(req.params.id);
+        const data = await userModel.delete(req.params.id as unknown as number);
         res.status(200);
         res.json(data);
     } catch (error) {
