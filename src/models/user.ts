@@ -1,7 +1,7 @@
 import Client from "../database";
 
 export type user = {
-    id: number,
+    id?: number,
     first_name: string,
     last_name: string,
     password: string
@@ -20,7 +20,7 @@ export default class User {
         }
     }
 
-    async show(id: number): Promise<user> {
+    async show(id: string): Promise<user> {
         try {
             const connection = await Client.connect();
             const sql = 'SELECT * FROM user_table WHERE id = ($1)';
@@ -56,7 +56,7 @@ export default class User {
         }
     }
 
-    async delete(id: number): Promise<user> {
+    async delete(id: string): Promise<user> {
         try {
             const connection = await Client.connect();
             const sql = 'DELETE FROM user_table WHERE id = ($1)';
