@@ -47,7 +47,7 @@ export default class Product {
     async edit(Product: product): Promise<product> {
         try {
             const connection = await Client.connect();
-            const sql = 'UPDATE product_table SET title = ($1) AND price = ($2) AND category = ($3) WHERE id = ($4)';
+            const sql = 'UPDATE product_table SET title = ($1), price = ($2), category = ($3) WHERE id = ($4)';
             const result = await connection.query(sql, [Product.title, Product.price, Product.category, Product.id]);
             connection.release();
             return result.rows[0];
