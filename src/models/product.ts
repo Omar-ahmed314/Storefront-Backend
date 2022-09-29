@@ -1,10 +1,10 @@
 import Client from "../database";
 
 export type product = {
-    id: number,
+    id?: number,
     title: string,
     price: number,
-    category: number
+    category?: number
 };
 
 export default class Product {
@@ -35,7 +35,7 @@ export default class Product {
     async create(Product: product): Promise<product> {
         try {
             const connection = await Client.connect();
-            const sql = 'INSERT INTO product_table (title, price) VALUES (($1), ($2))';
+            const sql = 'INSERT INTO product_table (title, price) VALUES (($1), ($2)) RETURNING *';
             const result = await connection.query(sql, [Product.title, Product.price]);
             connection.release();
             return result.rows[0];
@@ -47,7 +47,7 @@ export default class Product {
     async edit(Product: product): Promise<product> {
         try {
             const connection = await Client.connect();
-            const sql = 'UPDATE product_table SET title = ($1), price = ($2), category = ($3) WHERE id = ($4)';
+            const sql = 'UPDATE product_table SET title = ($1), price = ($2), category = ($3) WHERE id = ($4) RETURNING *';
             const result = await connection.query(sql, [Product.title, Product.price, Product.category, Product.id]);
             connection.release();
             return result.rows[0];
@@ -65,6 +65,18 @@ export default class Product {
             return result.rows[0];
         } catch (error) {
             throw new Error(`Cannot create new product: error ${error}`);
+        }
+    }
+
+    async deleteAll(): Promise<product> {
+        try {
+            const connection = await Client.connect();
+            const sql = 'DELETE FROM product_table;';
+            const result = await connection.query(sql);
+            connection.release();
+            return result.rows[0];
+        } catch (error) {
+            throw new Error(`Cannot delete all the products: error ${error}`);
         }
     }
 }

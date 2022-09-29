@@ -46,7 +46,7 @@ class Product {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const connection = yield database_1.default.connect();
-                const sql = 'INSERT INTO product_table (title, price) VALUES (($1), ($2))';
+                const sql = 'INSERT INTO product_table (title, price) VALUES (($1), ($2)) RETURNING *';
                 const result = yield connection.query(sql, [Product.title, Product.price]);
                 connection.release();
                 return result.rows[0];
@@ -60,7 +60,7 @@ class Product {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const connection = yield database_1.default.connect();
-                const sql = 'UPDATE product_table SET title = ($1) AND price = ($2) AND category = ($3) WHERE id = ($4)';
+                const sql = 'UPDATE product_table SET title = ($1), price = ($2), category = ($3) WHERE id = ($4) RETURNING *';
                 const result = yield connection.query(sql, [Product.title, Product.price, Product.category, Product.id]);
                 connection.release();
                 return result.rows[0];
@@ -81,6 +81,20 @@ class Product {
             }
             catch (error) {
                 throw new Error(`Cannot create new product: error ${error}`);
+            }
+        });
+    }
+    deleteAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const connection = yield database_1.default.connect();
+                const sql = 'DELETE FROM product_table;';
+                const result = yield connection.query(sql);
+                connection.release();
+                return result.rows[0];
+            }
+            catch (error) {
+                throw new Error(`Cannot delete all the products: error ${error}`);
             }
         });
     }
