@@ -2,7 +2,8 @@ import Client from "../database";
 
 export type order = {
     id: number,
-    user_id: number
+    user_id: number,
+    status: boolean
 };
 
 export default class Order {
@@ -35,6 +36,30 @@ export default class Order {
             const connection = await Client.connect();
             const sql = 'INSERT INTO order_table (user_id) VALUES (($1))';
             const result = await connection.query(sql, [Order.user_id]);
+            connection.release();
+            return result.rows[0];
+        } catch (error) {
+            throw new Error(`Cannot create new order: error ${error}`);
+        }
+    }
+
+    async edit(Order: order): Promise<order> {
+        try {
+            const connection = await Client.connect();
+            const sql = 'UPDATE order_table SET status = ($1) WHERE order_id = ($2)';
+            const result = await connection.query(sql, [Order.status, Order.id]);
+            connection.release();
+            return result.rows[0];
+        } catch (error) {
+            throw new Error(`Cannot create new order: error ${error}`);
+        }
+    }
+
+    async delete(id: number): Promise<order> {
+        try {
+            const connection = await Client.connect();
+            const sql = 'DELETE FROM order_table WHERE order_id = ($1)';
+            const result = await connection.query(sql, [id]);
             connection.release();
             return result.rows[0];
         } catch (error) {
