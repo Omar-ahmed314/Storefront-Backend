@@ -1,17 +1,17 @@
 import Client from "../database";
 
-export type user = {
+export type product = {
     id: number,
-    first_name: string,
-    last_name: string,
-    password: string
+    title: string,
+    price: number,
+    category: number
 };
 
-export default class User {
-    async index(): Promise<user[]> {
+export default class Product {
+    async index(): Promise<product[]> {
         try {
             const connection = await Client.connect();
-            const sql = 'SELECT * FROM user_table';
+            const sql = 'SELECT * FROM product_table';
             const result = await connection.query(sql);
             connection.release();
             return result.rows;
@@ -20,10 +20,10 @@ export default class User {
         }
     }
 
-    async show(id: number): Promise<user> {
+    async show(id: number): Promise<product> {
         try {
             const connection = await Client.connect();
-            const sql = 'SELECT * FROM user_table WHERE id = ($1)';
+            const sql = 'SELECT * FROM product_table WHERE id = ($1)';
             const result = await connection.query(sql, [id]);
             connection.release();
             return result.rows[0];
@@ -32,15 +32,15 @@ export default class User {
         }
     }
 
-    async create(User: user): Promise<user> {
+    async create(Product: product): Promise<product> {
         try {
             const connection = await Client.connect();
-            const sql = 'INSERT INTO user_table (first_name, last_name, password) VALUES (($1), ($2), ($3))';
-            const result = await connection.query(sql, [User.first_name, User.last_name, User.password]);
+            const sql = 'INSERT INTO product_table (title, price) VALUES (($1), ($2))';
+            const result = await connection.query(sql, [Product.title, Product.price]);
             connection.release();
             return result.rows[0];
         } catch (error) {
-            throw new Error(`Cannot create new user: error ${error}`);
+            throw new Error(`Cannot create new product: error ${error}`);
         }
     }
 }
