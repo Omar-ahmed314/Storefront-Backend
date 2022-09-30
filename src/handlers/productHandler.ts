@@ -70,11 +70,11 @@ const _delete = async (req: Request, res: Response) => {
 }
 
 const productRoutes = (app: Application) => {
-    app.get('product', index);
-    app.get('product/:id', show);
-    app.post('product', create);
-    app.put('product', edit);
-    app.delete('product/:id', _delete);
+    app.get('/product', index);
+    app.get('/product/:id', show);
+    app.post('/product', create);
+    app.put('/product', edit);
+    app.delete('/product/:id', _delete);
 }
 
 export default productRoutes;

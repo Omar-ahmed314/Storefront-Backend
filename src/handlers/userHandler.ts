@@ -72,11 +72,11 @@ const _delete = async (req: Request, res: Response) => {
 }
 
 const userRoutes = (app: Application) => {
-    app.get('user', index);
-    app.get('user/:id', show);
-    app.post('user', create);
-    app.put('user', edit);
-    app.delete('user/:id', _delete);
+    app.get('/user', index);
+    app.get('/user/:id', show);
+    app.post('/user', create);
+    app.put('/user', edit);
+    app.delete('/user/:id', _delete);
 }
 
 export default userRoutes;

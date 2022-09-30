@@ -6,8 +6,11 @@
   "scripts": {
     "start:prod": "node dist/server",
     "start:dev": "nodemon src/server.ts",
+    "jasmine": "npx jasmine",
+    "db-migrate:up": "db-migrate --env test up",
+    "db-migrate:down": "db-migrate --env test reset",
     "watch": "npx tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-    "test": "npm run build && db-migrate --env test up && npx jasmine && db-migrate --env test reset",
+    "test": "npm-run-all build db-migrate:up jasmine db-migrate:down -c",
     "build": "npx tsc"
   },
   "author": "Udacity",
@@ -20,6 +23,7 @@
     "dotenv": "^16.0.2",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "npm-run-all": "^4.1.5",
     "pg": "^8.5.1"
   },
   "devDependencies": {
@@ -30,10 +34,12 @@
     "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "^18.7.23",
     "@types/pg": "^7.14.7",
+    "@types/supertest": "^2.0.12",
     "jasmine": "^3.99.0",
     "jasmine-spec-reporter": "^6.0.0",
     "jasmine-ts": "^0.3.0",
     "nodemon": "^2.0.20",
+    "supertest": "^6.2.4",
     "ts-node": "^9.1.1",
     "tsc-watch": "^4.2.9",
     "typescript": "^4.8.4"
