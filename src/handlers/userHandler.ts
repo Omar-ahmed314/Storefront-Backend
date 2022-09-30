@@ -45,7 +45,8 @@ const create = async (req: Request, res: Response) => {
             last_name: data.last_name
         }, process.env.JSON_SECRET_KEY as unknown as string);
         res.status(200);
-        res.json(token);
+        res.setHeader('authorization', `Bearer ${token}`);
+        res.json(data);
     } catch (error) {
         res.status(400);
         res.send(error);

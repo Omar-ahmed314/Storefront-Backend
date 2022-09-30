@@ -17,6 +17,17 @@ const supertest_1 = __importDefault(require("supertest"));
 const superTest = (0, supertest_1.default)(server_1.default);
 describe("Testing product routes", () => {
     let productTest;
+    let userTest;
+    let token;
+    beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
+        const data = yield superTest.post('/user').send({
+            first_name: 'omar',
+            last_name: 'ahmed',
+            password: 'password123'
+        });
+        userTest = data.body;
+        token = data.headers.authorization;
+    }));
     describe("Testing index endpoint", () => {
         it("should return empty array", () => __awaiter(void 0, void 0, void 0, function* () {
             const data = yield superTest.get('/product');
@@ -25,7 +36,9 @@ describe("Testing product routes", () => {
     });
     describe("Testing create endpoint", () => {
         it("should return the created product", () => __awaiter(void 0, void 0, void 0, function* () {
-            const data = yield superTest.post('/product').send({
+            const data = yield superTest.post('/product')
+                .set('authorization', token)
+                .send({
                 title: 'rice',
                 price: 30
             });
@@ -41,7 +54,9 @@ describe("Testing product routes", () => {
     });
     describe("Testing edit endpoint", () => {
         it("should edit the needed product", () => __awaiter(void 0, void 0, void 0, function* () {
-            const data = yield superTest.put(`/product`).send({
+            const data = yield superTest.put(`/product`)
+                .set('authorization', token)
+                .send({
                 id: productTest.id,
                 title: 'rice',
                 price: 40
@@ -52,8 +67,13 @@ describe("Testing product routes", () => {
     });
     describe("Testing delete endpoint", () => {
         it("should delete the needed product", () => __awaiter(void 0, void 0, void 0, function* () {
-            const data = yield superTest.delete(`/product/${productTest.id}`);
+            const data = yield superTest.delete(`/product/${productTest.id}`)
+                .set('authorization', token);
             expect(data.status).toEqual(200);
         }));
     });
+    afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
+        yield superTest.delete(`/user/${userTest.id}`)
+            .set('authorization', token);
+    }));
 });

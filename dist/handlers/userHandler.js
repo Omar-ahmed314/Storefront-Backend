@@ -13,8 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = __importDefault(require("../models/user"));
-const dotenv_1 = __importDefault(require("dotenv"));
 const userHandlerMid_1 = require("./middleware/userHandlerMid");
+const dotenv_1 = __importDefault(require("dotenv"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 dotenv_1.default.config();
 const userModel = new user_1.default();
 // endpoints
@@ -49,7 +50,13 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             password: req.body.password
         };
         const data = yield userModel.create(userData);
+        const token = jsonwebtoken_1.default.sign({
+            user_id: data.id,
+            first_name: data.first_name,
+            last_name: data.last_name
+        }, process.env.JSON_SECRET_KEY);
         res.status(200);
+        res.setHeader('authorization', `Bearer ${token}`);
         res.json(data);
     }
     catch (error) {
@@ -86,10 +93,10 @@ const _delete = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 const userRoutes = (app) => {
-    app.get('/user', index);
-    app.get('/user/:id', show);
+    app.get('/user', [userHandlerMid_1.tokenVerfication], index);
+    app.get('/user/:id', [userHandlerMid_1.tokenVerfication], show);
     app.post('/user', [userHandlerMid_1.userValidation, userHandlerMid_1.userEncryption], create);
-    app.put('/user', edit);
-    app.delete('/user/:id', _delete);
+    app.put('/user', [userHandlerMid_1.tokenVerfication], edit);
+    app.delete('/user/:id', [userHandlerMid_1.tokenVerfication], _delete);
 };
 exports.default = userRoutes;

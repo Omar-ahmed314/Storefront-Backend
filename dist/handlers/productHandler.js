@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const product_1 = __importDefault(require("../models/product"));
+const userHandlerMid_1 = require("./middleware/userHandlerMid");
 const productModel = new product_1.default();
 // endpoints
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -83,8 +84,8 @@ const _delete = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const productRoutes = (app) => {
     app.get('/product', index);
     app.get('/product/:id', show);
-    app.post('/product', create);
-    app.put('/product', edit);
-    app.delete('/product/:id', _delete);
+    app.post('/product', [userHandlerMid_1.tokenVerfication], create);
+    app.put('/product', [userHandlerMid_1.tokenVerfication], edit);
+    app.delete('/product/:id', [userHandlerMid_1.tokenVerfication], _delete);
 };
 exports.default = productRoutes;

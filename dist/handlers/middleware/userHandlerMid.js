@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userValidation = exports.userEncryption = void 0;
+exports.tokenVerfication = exports.userValidation = exports.userEncryption = void 0;
 const services_1 = __importDefault(require("../../services/services"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 dotenv_1.default.config();
 const userEncryption = (req, res, next) => {
     const hashedPassword = bcrypt_1.default.hashSync(req.body.password + process.env.SECRET_KEY, parseInt(process.env.SALT_ROUNDS));
@@ -41,3 +42,20 @@ const userValidation = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.userValidation = userValidation;
+const tokenVerfication = (req, res, next) => {
+    try {
+        const authorizationHeader = req.headers.authorization;
+        if (authorizationHeader == undefined)
+            throw new Error('authorization token not found');
+        const token = authorizationHeader.split(' ')[1];
+        const valid = jsonwebtoken_1.default.verify(token, process.env.JSON_SECRET_KEY);
+        next();
+    }
+    catch (error) {
+        res.status(404);
+        res.json({
+            msg: 'access token not valid'
+        });
+    }
+};
+exports.tokenVerfication = tokenVerfication;

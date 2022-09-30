@@ -17,12 +17,7 @@ const supertest_1 = __importDefault(require("supertest"));
 const superTest = (0, supertest_1.default)(server_1.default);
 describe("Testing user routes", () => {
     let userTest;
-    describe("Testing index endpoint", () => {
-        it("should return empty array", () => __awaiter(void 0, void 0, void 0, function* () {
-            const data = yield superTest.get('/user');
-            expect(data.body).toEqual([]);
-        }));
-    });
+    let token;
     describe("Testing create endpoint", () => {
         it("should return the created user", () => __awaiter(void 0, void 0, void 0, function* () {
             const data = yield superTest.post('/user').send({
@@ -31,18 +26,29 @@ describe("Testing user routes", () => {
                 password: 'password123'
             });
             userTest = data.body;
+            token = data.headers.authorization;
             expect(data.status).toEqual(200);
+        }));
+    });
+    describe("Testing index endpoint", () => {
+        it("should return empty array", () => __awaiter(void 0, void 0, void 0, function* () {
+            const data = yield superTest.get('/user')
+                .set('authorization', token);
+            expect(data.body).not.toEqual([]);
         }));
     });
     describe("Testing show endpoint", () => {
         it("should return the needed user", () => __awaiter(void 0, void 0, void 0, function* () {
-            const data = yield superTest.get(`/user/${userTest.id}`);
+            const data = yield superTest.get(`/user/${userTest.id}`)
+                .set('authorization', token);
             expect(data.status).toEqual(200);
         }));
     });
     describe("Testing edit endpoint", () => {
         it("should edit the needed user", () => __awaiter(void 0, void 0, void 0, function* () {
-            const data = yield superTest.put(`/user`).send({
+            const data = yield superTest.put(`/user`)
+                .set('authorization', token)
+                .send({
                 id: userTest.id,
                 first_name: 'omar',
                 last_name: 'ahmed',
@@ -54,7 +60,8 @@ describe("Testing user routes", () => {
     });
     describe("Testing delete endpoint", () => {
         it("should delete the needed user", () => __awaiter(void 0, void 0, void 0, function* () {
-            const data = yield superTest.delete(`/user/${userTest.id}`);
+            const data = yield superTest.delete(`/user/${userTest.id}`)
+                .set('authorization', token);
             expect(data.status).toEqual(200);
         }));
     });

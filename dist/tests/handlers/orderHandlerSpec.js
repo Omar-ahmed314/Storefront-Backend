@@ -18,6 +18,7 @@ const superTest = (0, supertest_1.default)(server_1.default);
 describe("Testing order routes", () => {
     let orderTest;
     let userTest;
+    let token;
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
         const data = yield superTest.post('/user').send({
             first_name: 'omar',
@@ -25,16 +26,20 @@ describe("Testing order routes", () => {
             password: 'password123'
         });
         userTest = data.body;
+        token = data.headers.authorization;
     }));
     describe("Testing index endpoint", () => {
         it("should return empty array", () => __awaiter(void 0, void 0, void 0, function* () {
-            const data = yield superTest.get('/order');
+            const data = yield superTest.get('/order')
+                .set('authorization', token);
             expect(data.body).toEqual([]);
         }));
     });
     describe("Testing create endpoint", () => {
         it("should return the created order", () => __awaiter(void 0, void 0, void 0, function* () {
-            const data = yield superTest.post('/order').send({
+            const data = yield superTest.post('/order')
+                .set('authorization', token)
+                .send({
                 user_id: userTest.id,
                 status: false
             });
@@ -44,13 +49,16 @@ describe("Testing order routes", () => {
     });
     describe("Testing show endpoint", () => {
         it("should return the needed order", () => __awaiter(void 0, void 0, void 0, function* () {
-            const data = yield superTest.get(`/order/${orderTest.id}`);
+            const data = yield superTest.get(`/order/${orderTest.id}`)
+                .set('authorization', token);
             expect(data.status).toEqual(200);
         }));
     });
     describe("Testing edit endpoint", () => {
         it("should edit the needed order", () => __awaiter(void 0, void 0, void 0, function* () {
-            const data = yield superTest.put(`/order`).send({
+            const data = yield superTest.put(`/order`)
+                .set('authorization', token)
+                .send({
                 id: orderTest.id,
                 user_id: userTest.id,
                 status: true
@@ -61,11 +69,13 @@ describe("Testing order routes", () => {
     });
     describe("Testing delete endpoint", () => {
         it("should delete the needed order", () => __awaiter(void 0, void 0, void 0, function* () {
-            const data = yield superTest.delete(`/order/${orderTest.id}`);
+            const data = yield superTest.delete(`/order/${orderTest.id}`)
+                .set('authorization', token);
             expect(data.status).toEqual(200);
         }));
     });
     afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
-        yield superTest.delete(`/user/${userTest.id}`);
+        yield superTest.delete(`/user/${userTest.id}`)
+            .set('authorization', token);
     }));
 });

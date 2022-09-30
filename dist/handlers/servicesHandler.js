@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const services_1 = __importDefault(require("../services/services"));
+const userHandlerMid_1 = require("./middleware/userHandlerMid");
 const miscQueriesModel = new services_1.default();
 // endpoints
 const incomplitedOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -27,6 +28,6 @@ const incomplitedOrders = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 const servicesRoutes = (app) => {
-    app.get('/all_incomplited_orders', incomplitedOrders);
+    app.get('/all_incomplited_orders', [userHandlerMid_1.tokenVerfication], incomplitedOrders);
 };
 exports.default = servicesRoutes;

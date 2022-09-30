@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const order_1 = __importDefault(require("../models/order"));
+const userHandlerMid_1 = require("./middleware/userHandlerMid");
 const orderModel = new order_1.default();
 // endpoints
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -93,11 +94,11 @@ const _delete = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 const orderRoutes = (app) => {
-    app.get('/order', index);
-    app.get('/order/:id', show);
-    app.post('/order', create);
-    app.put('/order', edit);
-    app.post('/order/product', addProductToOrder);
-    app.delete('/order/:id', _delete);
+    app.get('/order', [userHandlerMid_1.tokenVerfication], index);
+    app.get('/order/:id', [userHandlerMid_1.tokenVerfication], show);
+    app.post('/order', [userHandlerMid_1.tokenVerfication], create);
+    app.put('/order', [userHandlerMid_1.tokenVerfication], edit);
+    app.post('/order/product', [userHandlerMid_1.tokenVerfication], addProductToOrder);
+    app.delete('/order/:id', [userHandlerMid_1.tokenVerfication], _delete);
 };
 exports.default = orderRoutes;
