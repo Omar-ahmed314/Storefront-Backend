@@ -1,5 +1,6 @@
 import miscQueries from '../services/services';
 import { Response, Request, Application } from 'express';
+import { tokenVerfication } from './middleware/userHandlerMid';
 
 const miscQueriesModel = new miscQueries();
 
@@ -16,7 +17,7 @@ const incomplitedOrders = async (req : Request, res: Response) => {
 }
 
 const servicesRoutes = (app: Application) => {
-    app.get('/all_incomplited_orders', incomplitedOrders);
+    app.get('/all_incomplited_orders', [tokenVerfication], incomplitedOrders);
 }
 
 export default servicesRoutes;

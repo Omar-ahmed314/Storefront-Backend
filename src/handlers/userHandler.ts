@@ -1,5 +1,5 @@
 import User, {user} from "../models/user";
-import { userEncryption, userValidation } from './middleware/userHandlerMid';
+import { tokenVerfication, userEncryption, userValidation } from './middleware/userHandlerMid';
 import { Response, Request, Application } from 'express';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
@@ -81,11 +81,11 @@ const _delete = async (req: Request, res: Response) => {
 }
 
 const userRoutes = (app: Application) => {
-    app.get('/user', index);
-    app.get('/user/:id', show);
+    app.get('/user', [tokenVerfication], index);
+    app.get('/user/:id', [tokenVerfication], show);
     app.post('/user', [userValidation, userEncryption], create);
-    app.put('/user', edit);
-    app.delete('/user/:id', _delete);
+    app.put('/user', [tokenVerfication], edit);
+    app.delete('/user/:id', [tokenVerfication], _delete);
 }
 
 export default userRoutes;

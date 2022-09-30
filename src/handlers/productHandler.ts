@@ -1,5 +1,6 @@
 import Product, {product} from "../models/product";
 import { Response, Request, Application } from 'express';
+import { tokenVerfication } from "./middleware/userHandlerMid";
 
 const productModel = new Product();
 
@@ -72,9 +73,9 @@ const _delete = async (req: Request, res: Response) => {
 const productRoutes = (app: Application) => {
     app.get('/product', index);
     app.get('/product/:id', show);
-    app.post('/product', create);
-    app.put('/product', edit);
-    app.delete('/product/:id', _delete);
+    app.post('/product', [tokenVerfication], create);
+    app.put('/product', [tokenVerfication], edit);
+    app.delete('/product/:id', [tokenVerfication], _delete);
 }
 
 export default productRoutes;

@@ -1,5 +1,6 @@
 import Order, {order} from "../models/order";
 import { Response, Request, Application } from 'express';
+import { tokenVerfication } from "./middleware/userHandlerMid";
 
 const orderModel = new Order();
 
@@ -82,12 +83,12 @@ const _delete = async (req: Request, res: Response) => {
 }
 
 const orderRoutes = (app: Application) => {
-    app.get('/order', index);
-    app.get('/order/:id', show);
-    app.post('/order', create);
-    app.put('/order', edit);
-    app.post('/order/product', addProductToOrder);
-    app.delete('/order/:id', _delete);
+    app.get('/order', [tokenVerfication], index);
+    app.get('/order/:id', [tokenVerfication], show);
+    app.post('/order', [tokenVerfication], create);
+    app.put('/order', [tokenVerfication], edit);
+    app.post('/order/product', [tokenVerfication], addProductToOrder);
+    app.delete('/order/:id', [tokenVerfication], _delete);
 }
 
 export default orderRoutes;
