@@ -15,8 +15,8 @@ const incomplitedOrders = async (req : Request, res: Response) => {
    }
 }
 
-const userRoutes = (app: Application) => {
+const servicesRoutes = (app: Application) => {
     app.get('/all_incomplited_orders', incomplitedOrders);
 }
 
-export default userRoutes;
+export default servicesRoutes;

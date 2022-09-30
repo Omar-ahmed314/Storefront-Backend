@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import userRoutes from './handlers/userHandler';
 import productRoutes from './handlers/productHandler';
 import orderRoutes from './handlers/orderHandler';
+import servicesRoutes from './handlers/servicesHandler';
 
 const app: Application = express();
 const PORT = process.env.PORT || 3000;
@@ -17,6 +18,7 @@ app.get('/', (req: Request, res: Response) => {
 userRoutes(app);
 productRoutes(app);
 orderRoutes(app);
+servicesRoutes(app);
 
 app.listen(PORT, () => {
     console.log(`Successfully connected to the port ${PORT}`);
