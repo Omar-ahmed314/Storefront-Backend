@@ -1,4 +1,4 @@
-import express, {Response, Request, Application} from 'express';
+import express, {Response, Request, Application, NextFunction} from 'express';
 import bodyParser from 'body-parser';
 import userRoutes from './handlers/userHandler';
 import productRoutes from './handlers/productHandler';
@@ -19,6 +19,13 @@ userRoutes(app);
 productRoutes(app);
 orderRoutes(app);
 servicesRoutes(app);
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+    res.status(404);
+    res.json({
+        msg: "Page not found"
+    });
+});
 
 app.listen(PORT, () => {
     console.log(`Successfully connected to the port ${PORT}`);

@@ -1,5 +1,9 @@
 import User, {user} from "../models/user";
+import { userEncryption, userValidation } from './middleware/userHandlerMid';
 import { Response, Request, Application } from 'express';
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+dotenv.config();
 
 const userModel = new User();
 
@@ -35,8 +39,13 @@ const create = async (req: Request, res: Response) => {
             password: req.body.password
         };
         const data = await userModel.create(userData);
+        const token = jwt.sign({
+            user_id: data.id,
+            first_name: data.first_name,
+            last_name: data.last_name
+        }, process.env.JSON_SECRET_KEY as unknown as string);
         res.status(200);
-        res.json(data);
+        res.json(token);
     } catch (error) {
         res.status(400);
         res.send(error);
@@ -74,7 +83,7 @@ const _delete = async (req: Request, res: Response) => {
 const userRoutes = (app: Application) => {
     app.get('/user', index);
     app.get('/user/:id', show);
-    app.post('/user', create);
+    app.post('/user', [userValidation, userEncryption], create);
     app.put('/user', edit);
     app.delete('/user/:id', _delete);
 }

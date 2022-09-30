@@ -13,6 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = __importDefault(require("../models/user"));
+const dotenv_1 = __importDefault(require("dotenv"));
+const userHandlerMid_1 = require("./middleware/userHandlerMid");
+dotenv_1.default.config();
 const userModel = new user_1.default();
 // endpoints
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -85,7 +88,7 @@ const _delete = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const userRoutes = (app) => {
     app.get('/user', index);
     app.get('/user/:id', show);
-    app.post('/user', create);
+    app.post('/user', [userHandlerMid_1.userValidation, userHandlerMid_1.userEncryption], create);
     app.put('/user', edit);
     app.delete('/user/:id', _delete);
 };

@@ -1,4 +1,5 @@
 import Client from "../database";
+import { user } from "../models/user";
 
 export default class miscQueries {
     async getAllIncomplitedOrders(user_id: number):
@@ -28,6 +29,18 @@ export default class miscQueries {
             return result.rows;
         } catch (error) {
             throw new Error(`connection failed at the getAllIncomplitedOrders with error: ${error}`);
+        }
+    }
+
+    async getUserByName(first_name: string, last_name: string): Promise<user> {
+        try {
+            const connection = await Client.connect();
+            const sql = 'SELECT * FROM user_table WHERE first_name = ($1) AND last_name = ($2)';
+            const result = await connection.query(sql, [first_name, last_name]);
+            connection.release();
+            return result.rows[0];
+        } catch (error) {
+            throw new Error(`connection failed at the getUserByName with error: ${error}`);
         }
     }
 
