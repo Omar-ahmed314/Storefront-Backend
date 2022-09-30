@@ -1,4 +1,5 @@
 import Order, { order } from "../../models/order";
+import Product, { product } from "../../models/product";
 import User, { user } from "../../models/user";
 
 const orderModel = new Order();
@@ -6,15 +7,25 @@ const orderModel = new Order();
 describe("Testing the order model", () => {
     let userTest: user;
     let orderTest: order;
+    let productTest: product;
+    let productModel: Product;
+    let userModel: User;
+
     beforeAll(async () => {
-        const userModel = new User();
+        userModel = new User();
+        productModel = new Product();
         const userData: user = {
             id: 1,
             first_name: 'omar',
             last_name: 'ahmed',
             password: 'password123'
         };
-        await userModel.deleteAll();
+        const productData: product = {
+            id: 1,
+            title: 'rice',
+            price: 30
+        };
+        productTest = await productModel.create(productData);
         userTest = await userModel.create(userData);
     });
 
@@ -52,7 +63,7 @@ describe("Testing the order model", () => {
             expect(data).toBeDefined();
         });
     });
-
+    
     describe("Testing the edit function", () => {
         it("The function should be declared", () => {
             expect(orderModel.edit).toBeDefined();
@@ -61,8 +72,22 @@ describe("Testing the order model", () => {
             // update the status of the previous created order
             const orderData: order = orderTest;
             orderData.status = true;
-
+            
             const data = await orderModel.edit(orderData);
+            expect(data).toBeDefined();
+        });
+    });
+    
+    describe("Testing the addProductToOrder function", () => {
+        it("The function should be declared", () => {
+            expect(orderModel.addProductToOrder).toBeDefined();
+        });
+        it("The product should be added to the order", async () => {
+            const data = await orderModel.addProductToOrder(
+                orderTest.id,
+                productTest.id,
+                30
+            );
             expect(data).toBeDefined();
         });
     });
@@ -78,7 +103,10 @@ describe("Testing the order model", () => {
         });
     });
 
+
     afterAll(async () => {
+        await productModel.deleteAll();
+        await userModel.deleteAll();
         await orderModel.deleteAll();
     });
 });

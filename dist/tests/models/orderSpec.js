@@ -13,20 +13,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const order_1 = __importDefault(require("../../models/order"));
+const product_1 = __importDefault(require("../../models/product"));
 const user_1 = __importDefault(require("../../models/user"));
 const orderModel = new order_1.default();
 describe("Testing the order model", () => {
     let userTest;
     let orderTest;
+    let productTest;
+    let productModel;
+    let userModel;
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
-        const userModel = new user_1.default();
+        userModel = new user_1.default();
+        productModel = new product_1.default();
         const userData = {
             id: 1,
             first_name: 'omar',
             last_name: 'ahmed',
             password: 'password123'
         };
-        yield userModel.deleteAll();
+        const productData = {
+            id: 1,
+            title: 'rice',
+            price: 30
+        };
+        productTest = yield productModel.create(productData);
         userTest = yield userModel.create(userData);
     }));
     describe("Testing the index function", () => {
@@ -73,6 +83,15 @@ describe("Testing the order model", () => {
             expect(data).toBeDefined();
         }));
     });
+    describe("Testing the addProductToOrder function", () => {
+        it("The function should be declared", () => {
+            expect(orderModel.addProductToOrder).toBeDefined();
+        });
+        it("The product should be added to the order", () => __awaiter(void 0, void 0, void 0, function* () {
+            const data = yield orderModel.addProductToOrder(orderTest.id, productTest.id, 30);
+            expect(data).toBeDefined();
+        }));
+    });
     describe("Testing the delete function", () => {
         it("The function should be declared", () => {
             expect(orderModel.delete).toBeDefined();
@@ -84,6 +103,8 @@ describe("Testing the order model", () => {
         }));
     });
     afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
+        yield productModel.deleteAll();
+        yield userModel.deleteAll();
         yield orderModel.deleteAll();
     }));
 });
