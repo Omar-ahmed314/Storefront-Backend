@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const product_1 = __importDefault(require("../../models/product"));
 const productModel = new product_1.default();
 describe("Testing the product model", () => {
+    let productTest;
     describe("Testing the index function", () => {
         it("The function should be declared", () => {
             expect(productModel.index).toBeDefined();
@@ -30,19 +31,20 @@ describe("Testing the product model", () => {
         });
         it("The product should be created", () => __awaiter(void 0, void 0, void 0, function* () {
             const productData = {
+                id: 1,
                 title: 'oil',
                 price: 10,
             };
-            const data = yield productModel.create(productData);
-            expect(data).toBeDefined();
+            productTest = yield productModel.create(productData);
+            expect(productTest).toBeDefined();
         }));
     });
     describe("Testing the show function", () => {
         it("The function should be declared", () => {
             expect(productModel.show).toBeDefined();
         });
-        it("The product id (1) should be exist", () => __awaiter(void 0, void 0, void 0, function* () {
-            const data = yield productModel.show(1);
+        it("The product should be exist", () => __awaiter(void 0, void 0, void 0, function* () {
+            const data = yield productModel.show(productTest.id);
             expect(data).toBeDefined();
         }));
     });
@@ -50,24 +52,20 @@ describe("Testing the product model", () => {
         it("The function should be declared", () => {
             expect(productModel.edit).toBeDefined();
         });
-        it("The product id (1) should be updated", () => __awaiter(void 0, void 0, void 0, function* () {
-            const productData = {
-                id: 1,
-                title: 'rice',
-                price: 20
-            };
-            yield productModel.edit(productData);
-            const { title, price } = yield productModel.show(1);
-            expect({ title, price }).toEqual({ title: 'rice', price: 20 });
+        it("The product should be updated", () => __awaiter(void 0, void 0, void 0, function* () {
+            const productData = productTest;
+            productData.price = 30;
+            const data = yield productModel.edit(productData);
+            expect(data).toBeDefined();
         }));
     });
     describe("Testing the delete function", () => {
         it("The function should be declared", () => {
             expect(productModel.delete).toBeDefined();
         });
-        it("The product id (1) should be deleted", () => __awaiter(void 0, void 0, void 0, function* () {
-            yield productModel.delete(1);
-            const data = yield productModel.show(1);
+        it("The product should be deleted", () => __awaiter(void 0, void 0, void 0, function* () {
+            yield productModel.delete(productTest.id);
+            const data = yield productModel.show(productTest.id);
             expect(data).toBeUndefined();
         }));
     });

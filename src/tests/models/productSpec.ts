@@ -3,6 +3,7 @@ import Product, { product } from "../../models/product";
 const productModel = new Product();
 
 describe("Testing the product model", () => {
+    let productTest: product;
     describe("Testing the index function", () => {
         it("The function should be declared", () => {
             expect(productModel.index).toBeDefined();
@@ -19,11 +20,12 @@ describe("Testing the product model", () => {
         });
         it("The product should be created", async () => {
             const productData: product = {
+                id: 1,
                 title: 'oil',
                 price: 10,
             };
-            const data = await productModel.create(productData);
-            expect(data).toBeDefined();
+            productTest = await productModel.create(productData);
+            expect(productTest).toBeDefined();
         });
     });
 
@@ -31,8 +33,8 @@ describe("Testing the product model", () => {
         it("The function should be declared", () => {
             expect(productModel.show).toBeDefined();
         });
-        it("The product id (1) should be exist", async () => {
-            const data = await productModel.show(1);
+        it("The product should be exist", async () => {
+            const data = await productModel.show(productTest.id);
             expect(data).toBeDefined();
         });
     });
@@ -41,15 +43,11 @@ describe("Testing the product model", () => {
         it("The function should be declared", () => {
             expect(productModel.edit).toBeDefined();
         });
-        it("The product id (1) should be updated", async () => {
-            const productData: product = {
-                id: 1,
-                title: 'rice',
-                price: 20
-            };
-            await productModel.edit(productData);
-            const { title, price } = await productModel.show(1);
-            expect({ title, price }).toEqual({title: 'rice', price: 20});
+        it("The product should be updated", async () => {
+            const productData: product = productTest;
+            productData.price = 30;
+            const data = await productModel.edit(productData);
+            expect(data).toBeDefined();
         });
     });
 
@@ -57,9 +55,9 @@ describe("Testing the product model", () => {
         it("The function should be declared", () => {
             expect(productModel.delete).toBeDefined();
         });
-        it("The product id (1) should be deleted", async () => {
-            await productModel.delete(1);
-            const data = await productModel.show(1);
+        it("The product should be deleted", async () => {
+            await productModel.delete(productTest.id);
+            const data = await productModel.show(productTest.id);
             expect(data).toBeUndefined();
         });
     });

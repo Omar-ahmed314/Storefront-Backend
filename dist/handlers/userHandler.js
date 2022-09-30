@@ -40,6 +40,7 @@ const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userData = {
+            id: 1,
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             password: req.body.password
