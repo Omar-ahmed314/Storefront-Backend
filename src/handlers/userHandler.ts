@@ -85,7 +85,7 @@ const userRoutes = (app: Application) => {
     app.get('/user', [tokenVerfication], index);
     app.get('/user/:id', [tokenVerfication], show);
     app.post('/user', [userValidation, userEncryption], create);
-    app.put('/user', [tokenVerfication], edit);
+    app.put('/user', [tokenVerfication, userEncryption], edit);
     app.delete('/user/:id', [tokenVerfication], _delete);
 }
 
