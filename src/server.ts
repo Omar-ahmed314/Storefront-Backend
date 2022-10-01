@@ -1,5 +1,6 @@
 import express, {Response, Request, Application, NextFunction} from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import userRoutes from './handlers/userHandler';
 import productRoutes from './handlers/productHandler';
 import orderRoutes from './handlers/orderHandler';
@@ -9,6 +10,7 @@ const app: Application = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.get('/', (req: Request, res: Response) => {
     res.status(200).send('<h1> Hello from the store front project</h1>');
