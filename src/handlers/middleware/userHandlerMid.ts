@@ -3,7 +3,6 @@ import miscQueries from '../../services/services';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { PassThrough } from 'stream';
 dotenv.config();
 
 const userEncryption = (req: Request, res: Response, next: NextFunction) => {
