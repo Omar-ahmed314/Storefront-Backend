@@ -1,54 +1,40 @@
-# Storefront Backend Project
+# Store Front back-end
+Store front is a back-end API that memic store, that store contains customers, product and orders, as a customer you can make a signup and make orders and add some product into it.
 
-## Getting Started
+# How to install
+* Download [Nodejs](https://nodejs.org/en/download/) LTI
+* Download [PostgerSQL](https://www.postgresql.org/download/)
+* Create user with a password within the database shell or pgAdmin
+```postgres
+CREATE USER user_name WITH PASSWORD password_;
+```
+* Create the storefront database
+> note that the store front is the default name you can change it
+```postgres
+CREATE DATABASE store_front;
+```
+* Update **.env** and **database.json** file with database info
+* Clone the project
+* Run `npm install` from the project dir
+* Run `npm run db-migrate:up`
+> This command will instantiate the tables within the database
+* Run `npm run build`
+* Run `npm run start:prod`
+> This will start the server on the needed port
+* Look at the [Requirements file](REQUIREMENTS.md) to get API document
 
-This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
-
-## Required Technologies
-Your application must make use of the following libraries:
-- Postgres for the database
-- Node/Express for the application logic
-- dotenv from npm for managing environment variables
-- db-migrate from npm for migrations
-- jsonwebtoken from npm for working with JWTs
-- jasmine from npm for testing
-
-## Steps to Completion
-
-### 1. Plan to Meet Requirements
-
-In this repo there is a `REQUIREMENTS.md` document which outlines what this API needs to supply for the frontend, as well as the agreed upon data shapes to be passed between front and backend. This is much like a document you might come across in real life when building or extending an API. 
-
-Your first task is to read the requirements and update the document with the following:
-- Determine the RESTful route for each endpoint listed. Add the RESTful route and HTTP verb to the document so that the frontend developer can begin to build their fetch requests.    
-**Example**: A SHOW route: 'blogs/:id' [GET] 
-
-- Design the Postgres database tables based off the data shape requirements. Add to the requirements document the database tables and columns being sure to mark foreign keys.   
-**Example**: You can format this however you like but these types of information should be provided
-Table: Books (id:varchar, title:varchar, author:varchar, published_year:varchar, publisher_id:string[foreign key to publishers table], pages:number)
-
-**NOTE** It is important to remember that there might not be a one to one ratio between data shapes and database tables. Data shapes only outline the structure of objects being passed between frontend and API, the database may need multiple tables to store a single shape. 
-
-### 2.  DB Creation and Migrations
-
-Now that you have the structure of the databse outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder. 
-
-You must also ensure that any sensitive information is hashed with bcrypt. If any passwords are found in plain text in your application it will not pass.
-
-### 3. Models
-
-Create the models for each database table. The methods in each model should map to the endpoints in `REQUIREMENTS.md`. Remember that these models should all have test suites and mocks.
-
-### 4. Express Handlers
-
-Set up the Express handlers to route incoming requests to the correct model method. Make sure that the endpoints you create match up with the enpoints listed in `REQUIREMENTS.md`. Endpoints must have tests and be CORS enabled. 
-
-### 5. JWTs
-
-Add JWT functionality as shown in the course. Make sure that JWTs are required for the routes listed in `REQUIUREMENTS.md`.
-
-### 6. QA and `README.md`
-
-Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database. 
-
-Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+# How to test
+* Create a new database for testing let's call it store_front_test
+* Edit **.env** and **database.json** to work on test db
+```
+# This for .env file
+ENV = test
+```
+```json
+{
+    // This for database.json file
+    "defaultEnv": "test"
+}
+```
+* Run `npm run test`
+> Don't forget to abort me if there is a fail 😂
