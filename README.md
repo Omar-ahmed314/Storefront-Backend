@@ -13,7 +13,7 @@ CREATE USER user_name WITH PASSWORD password_;
 ```postgres
 CREATE DATABASE store_front;
 ```
-* Update **.env** and **database.json** file with database info
+* Update **.env** and **database.json** file with database info including database name, username, password and the port which the db works with (5432 by default)
 * Clone the project
 * Run `npm install` from the project dir
 * Run `npm run db-migrate:up`
