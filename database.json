@@ -1,5 +1,5 @@
 {
-    "defaultEnv": "dev",
+    "defaultEnv": "test",
     "dev": {
         "driver": "pg",
         "host": "localhost",

@@ -2,7 +2,7 @@ import Client from "../database";
 import { user } from "../models/user";
 
 export default class miscQueries {
-    async getAllIncomplitedOrders(user_id: number):
+    async getAllIncompletedOrders(user_id: number):
      Promise<{
         product_id: number,
         title: string,
@@ -23,12 +23,13 @@ export default class miscQueries {
                             where ot.user_id = ($1)
                             and opt.order_id = ot.id
                             and opt.product_id = pt.id
+                            and ot.status = false
                             order by (order_id)`;
             const result = await connection.query(sql, [user_id]);
             connection.release();
             return result.rows;
         } catch (error) {
-            throw new Error(`connection failed at the getAllIncomplitedOrders with error: ${error}`);
+            throw new Error(`connection failed at the getAllIncompletedOrders with error: ${error}`);
         }
     }
 

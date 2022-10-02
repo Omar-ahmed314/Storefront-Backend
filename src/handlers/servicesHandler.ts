@@ -5,9 +5,9 @@ import { tokenVerfication } from './middleware/userHandlerMid';
 const miscQueriesModel = new miscQueries();
 
 // endpoints
-const incomplitedOrders = async (req : Request, res: Response) => {
+const incompletedOrders = async (req : Request, res: Response) => {
    try {
-       const data = await miscQueriesModel.getAllIncomplitedOrders(req.body.id);
+       const data = await miscQueriesModel.getAllIncompletedOrders(req.body.id);
        res.status(200);
        res.json(data);
    } catch (error) {
@@ -17,7 +17,7 @@ const incomplitedOrders = async (req : Request, res: Response) => {
 }
 
 const servicesRoutes = (app: Application) => {
-    app.get('/all_incomplited_orders', [tokenVerfication], incomplitedOrders);
+    app.get('/all_incompleted_orders', [tokenVerfication], incompletedOrders);
 }
 
 export default servicesRoutes;

@@ -85,7 +85,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 ### Order_Product
 - Current Order by user (args: user id)[token required]
 ```json
-// route /all_incomplited_orders [GET]
+// route /all_incompleted_orders [GET]
 {
     // user id
     "id": 2
