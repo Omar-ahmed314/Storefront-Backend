@@ -12,7 +12,7 @@ describe("Testing the user model", () => {
         it("The function should be declared", () => {
             expect(userModel.index).toBeDefined();
         });
-        it("The table should be empty", async () => {
+        it("The table should be empty at the beginning", async () => {
             const data = await userModel.index();
             expect(data).toEqual([]);
         });
@@ -22,7 +22,7 @@ describe("Testing the user model", () => {
         it("The function should be declared", () => {
             expect(userModel.create).toBeDefined();
         });
-        it("The user should be created", async () => {
+        it("The user should be created and return the correct data", async () => {
             const userData: user = {
                 id: 1,
                 first_name: 'omar',
@@ -31,6 +31,9 @@ describe("Testing the user model", () => {
             };
             userTest  = await userModel.create(userData);
             expect(userTest).toBeDefined();
+            expect(userTest.first_name).toEqual('omar');
+            expect(userTest.last_name).toEqual('ahmed');
+            expect(userTest.password).toEqual('password123');
         });
     });
 
@@ -41,6 +44,9 @@ describe("Testing the user model", () => {
         it("The user id should be existed", async () => {
             const data = await userModel.show(userTest.id);
             expect(data).toBeDefined();
+            expect(data.first_name).toEqual('omar');
+            expect(data.last_name).toEqual('ahmed');
+            expect(data.password).toEqual('password123');
         });
     });
 
@@ -53,6 +59,9 @@ describe("Testing the user model", () => {
             userData.first_name = 'samer';
             const data = await userModel.edit(userData);
             expect(data).toBeDefined();
+            expect(data.first_name).toEqual('samer');
+            expect(data.last_name).toEqual('ahmed');
+            expect(data.password).toEqual('password123');
         });
     });
 
