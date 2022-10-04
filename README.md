@@ -38,3 +38,23 @@ ENV = test
 ```
 * Run `npm run test`
 > Don't forget to abort me if there is a fail 😂
+## Environment variables
+you can copy those variables into a new .env file in order to make your project works correctly
+```
+PORT = 3000
+# This part for database configuration
+POSTGRES_HOST = "127.0.0.1"
+POSTGRES_USER = "postgres"
+POSTGRES_DB = "store_front"
+POSTGRES_DB_TEST = "store_front_test"
+POSTGRES_DB_PORT = 5000
+POSTGRES_PASSWORD = "password123"
+ENV = test
+
+# bcrypt info
+SECRET_KEY = hakonamatata
+SALT_ROUNDS = 10
+
+# json token
+JSON_SECRET_KEY = hakonamatata
+```
