@@ -1,19 +1,19 @@
 {
-    "defaultEnv": "test",
+    "defaultEnv": {"ENV": "ENV"},
     "dev": {
         "driver": "pg",
-        "host": "localhost",
-        "port": 5000,
-        "database": "store_front",
-        "user": "postgres",
-        "password": "password123"
+        "host": {"ENV": "POSTGRES_HOST"},
+        "port": {"ENV": "POSTGRES_DB_PORT"},
+        "database": {"ENV": "POSTGRES_DB"},
+        "user": {"ENV": "POSTGRES_USER"},
+        "password": {"ENV": "POSTGRES_PASSWORD"}
     },
     "test": {
         "driver": "pg",
-        "host": "localhost",
-        "port": 5000,
-        "database": "store_front_test",
-        "user": "postgres",
-        "password": "password123"
+        "host": {"ENV": "POSTGRES_HOST"},
+        "port": {"ENV": "POSTGRES_DB_PORT"},
+        "database":  {"ENV": "POSTGRES_DB_TEST"},
+        "user": {"ENV": "POSTGRES_USER"},
+        "password": {"ENV": "POSTGRES_PASSWORD"}
     }
 }

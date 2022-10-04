@@ -20,7 +20,7 @@ CREATE DATABASE store_front;
 > This command will instantiate the tables within the database
 * Run `npm run build`
 * Run `npm run start:prod`
-> This will start the server on the needed port
+> This will start the server on previous configured port **5000**
 * Look at the [Requirements file](REQUIREMENTS.md) to get API document
 
 # How to test
