@@ -22,7 +22,7 @@ const show = async (req : Request, res: Response) => {
         res.status(200);
         res.json(data);
     } catch (error) {
-     res.status(500);
+     res.status(400);
      res.send(error);
     }
  }
@@ -35,7 +35,7 @@ const create = async (req: Request, res: Response) => {
             status: req.body.status
         };
         const data = await orderModel.create(orderData);
-        res.status(200);
+        res.status(201);
         res.json(data);
     } catch (error) {
         res.status(400);
@@ -51,7 +51,7 @@ const edit = async (req: Request, res: Response) => {
             status: req.body.status
         };
         const data = await orderModel.edit(orderData);
-        res.status(200);
+        res.status(201);
         res.json(data);
     } catch (error) {
         res.status(400);
@@ -63,7 +63,7 @@ const addProductToOrder = async (req: Request, res: Response) => {
     try {
         const { order_id, product_id, quantity } = req.body;
         const data = await orderModel.addProductToOrder(order_id, product_id, quantity);
-        res.status(200);
+        res.status(201);
         res.json(data);
     } catch (error) {
         res.status(400);
