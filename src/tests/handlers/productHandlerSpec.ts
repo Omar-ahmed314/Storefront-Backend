@@ -35,7 +35,35 @@ describe("Testing product routes", () => {
                 price: 30
             });
             productTest = data.body;
-            expect(data.status).toEqual(200);
+            expect(data.status).toEqual(201);
+            expect(data.body.title).toEqual('rice');
+            expect(data.body.price).toEqual(30);
+        });
+        it("should return unauthorized token", async () => {
+            const data = await superTest.post('/product')
+            .send({
+                title: 'rice',
+                price: 30
+            });
+            expect(data.status).toEqual(401);
+        });
+        it("should return bad request due to undefined title", async () => {
+            const data = await superTest.post('/product')
+            .set('authorization', token)
+            .send({
+                title: undefined,
+                price: 30
+            });
+            expect(data.status).toEqual(400);
+        });
+        it("should return bad request due to undefined price", async () => {
+            const data = await superTest.post('/product')
+            .set('authorization', token)
+            .send({
+                title: 'rice',
+                price: undefined
+            });
+            expect(data.status).toEqual(400);
         });
     });
 
@@ -43,6 +71,12 @@ describe("Testing product routes", () => {
         it("should return the needed product", async () => {
             const data = await superTest.get(`/product/${productTest.id}`);
             expect(data.status).toEqual(200);
+            expect(data.body.title).toEqual('rice');
+            expect(data.body.price).toEqual(30);
+        });
+        it("should return bad request due to wrong id = abd", async () => {
+            const data = await superTest.get(`/product/abc`);
+            expect(data.status).toEqual(400);
         });
     });
 
@@ -56,7 +90,18 @@ describe("Testing product routes", () => {
                 price: 40
             });
             productTest = data.body;
-            expect(data.status).toEqual(200);
+            expect(data.status).toEqual(201);
+            expect(data.body.title).toEqual('rice');
+            expect(data.body.price).toEqual(40);
+        });
+        it("should return unauthorized token", async () => {
+            const data = await superTest.put(`/product`)
+            .send({
+                id: productTest.id,
+                title: 'rice',
+                price: 40
+            });
+            expect(data.status).toEqual(401);
         });
     });
 
@@ -65,6 +110,15 @@ describe("Testing product routes", () => {
             const data = await superTest.delete(`/product/${productTest.id}`)
             .set('authorization', token);
             expect(data.status).toEqual(200);
+        });
+        it("shouldn't delete the needed product due to unauthorized token", async () => {
+            const data = await superTest.delete(`/product/${productTest.id}`)
+            expect(data.status).toEqual(401);
+        });
+        it("should return bad request due to wrong id = abc", async () => {
+            const data = await superTest.delete(`/product/abc`)
+            .set('authorization', token);
+            expect(data.status).toEqual(400);
         });
     });
 

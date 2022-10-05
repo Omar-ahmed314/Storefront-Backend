@@ -22,7 +22,7 @@ const show = async (req : Request, res: Response) => {
         res.status(200);
         res.json(data);
     } catch (error) {
-     res.status(500);
+     res.status(400);
      res.send(error);
     }
  }
@@ -35,7 +35,7 @@ const create = async (req: Request, res: Response) => {
             price: req.body.price
         };
         const data = await productModel.create(productData);
-        res.status(200);
+        res.status(201);
         res.json(data);
     } catch (error) {
         res.status(400);
@@ -51,7 +51,7 @@ const edit = async (req: Request, res: Response) => {
             price: req.body.price
         };
         const data = await productModel.edit(productData);
-        res.status(200);
+        res.status(201);
         res.json(data);
     } catch (error) {
         res.status(400);
