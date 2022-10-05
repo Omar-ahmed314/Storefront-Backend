@@ -25,7 +25,7 @@ const show = async (req : Request, res: Response) => {
         res.status(200);
         res.json(data);
     } catch (error) {
-     res.status(404);
+     res.status(400);
      res.send(error);
     }
  }

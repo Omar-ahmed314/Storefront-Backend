@@ -29,6 +29,22 @@ describe("Testing user routes", () => {
             expect(data.body.last_name).toEqual('ahmed');
             expect(hashedPassword).toBeTrue();
         });
+        it("shouldn't create the null user and return error", async () => {
+            const data = await superTest.post('/user').send({
+                first_name: null,
+                last_name: '',
+                password: 'password123'
+            });
+            expect(data.status).toEqual(400);
+        });
+        it("shouldn't create the undefined user and return error", async () => {
+            const data = await superTest.post('/user').send({
+                first_name: undefined,
+                last_name: '',
+                password: 'password123'
+            });
+            expect(data.status).toEqual(400);
+        });
     });
 
     describe("Testing index endpoint", () => {
@@ -59,6 +75,11 @@ describe("Testing user routes", () => {
             const data = await superTest.get(`/user/${userTest.id}`)
             expect(data.status).toEqual(401);
             expect(data.body.msg).toEqual('access token not valid');
+        });
+        it("should return bad request due to wrong id = abc", async () => {
+            const data = await superTest.get(`/user/abc`)
+            .set('authorization', token);
+            expect(data.status).toEqual(400);
         });
     });
 
