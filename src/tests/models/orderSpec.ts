@@ -51,6 +51,8 @@ describe("Testing the order model", () => {
             };
             orderTest = await orderModel.create(orderData);
             expect(orderTest).toBeDefined();
+            expect(orderTest.user_id).toEqual(userTest.id);
+            expect(orderTest.status).toEqual(false);
         });
     });
 
@@ -61,6 +63,8 @@ describe("Testing the order model", () => {
         it("The order should be exist", async () => {
             const data = await orderModel.show(orderTest.id);
             expect(data).toBeDefined();
+            expect(data.user_id).toEqual(userTest.id);
+            expect(data.status).toEqual(false);
         });
     });
     
@@ -75,6 +79,8 @@ describe("Testing the order model", () => {
             
             const data = await orderModel.edit(orderData);
             expect(data).toBeDefined();
+            expect(data.user_id).toEqual(userTest.id);
+            expect(data.status).toEqual(true);
         });
     });
     
@@ -89,6 +95,9 @@ describe("Testing the order model", () => {
                 30
             );
             expect(data).toBeDefined();
+            expect(data.order_id).toEqual(orderTest.id);
+            expect(data.product_id).toEqual(productTest.id);
+            expect(data.quantity).toEqual(30);
         });
     });
 

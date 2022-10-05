@@ -25,7 +25,7 @@ const show = async (req : Request, res: Response) => {
         res.status(200);
         res.json(data);
     } catch (error) {
-     res.status(500);
+     res.status(400);
      res.send(error);
     }
  }
@@ -44,7 +44,7 @@ const create = async (req: Request, res: Response) => {
             first_name: data.first_name,
             last_name: data.last_name
         }, process.env.JSON_SECRET_KEY as unknown as string);
-        res.status(200);
+        res.status(201);
         res.setHeader('authorization', `Bearer ${token}`);
         res.json(data);
     } catch (error) {
@@ -62,7 +62,7 @@ const edit = async (req: Request, res: Response) => {
             password: req.body.password
         };
         const data = await userModel.edit(userData);
-        res.status(200);
+        res.status(201);
         res.json(data);
     } catch (error) {
         res.status(400);

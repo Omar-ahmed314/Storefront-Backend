@@ -26,6 +26,8 @@ describe("Testing the product model", () => {
             };
             productTest = await productModel.create(productData);
             expect(productTest).toBeDefined();
+            expect(productTest.title).toEqual('oil');
+            expect(productTest.price).toEqual(10);
         });
     });
 
@@ -36,6 +38,8 @@ describe("Testing the product model", () => {
         it("The product should be exist", async () => {
             const data = await productModel.show(productTest.id);
             expect(data).toBeDefined();
+            expect(data.title).toEqual('oil');
+            expect(data.price).toEqual(10);
         });
     });
 
@@ -48,6 +52,8 @@ describe("Testing the product model", () => {
             productData.price = 30;
             const data = await productModel.edit(productData);
             expect(data).toBeDefined();
+            expect(data.title).toEqual('oil');
+            expect(data.price).toEqual(30);
         });
     });
 
