@@ -41,6 +41,11 @@ describe("Testing the misc Queries (services)", () => {
             await orderModel.addProductToOrder(orderTest.id, productTest.id, 30);
             const data = await miscQueriesModel.getAllIncompletedOrders(userTest.id);
             expect(data).toBeDefined();
+            expect(data[0].product_id).toEqual(productTest.id);
+            expect(data[0].title).toEqual(productTest.title);
+            expect(data[0].price).toEqual(productTest.price);
+            expect(data[0].quantity).toEqual(30);
+            expect(data[0].status).toEqual(orderTest.status);
         });
         it("The function should return no completed orders", async () => {
             orderTest.status = true;
@@ -58,6 +63,8 @@ describe("Testing the misc Queries (services)", () => {
         it("The function should return the user", async () => {
             const data = await miscQueriesModel.getUserByName('omar', 'ahmed');
             expect(data).toBeDefined();
+            expect(data.first_name).toEqual('omar');
+            expect(data.last_name).toEqual('ahmed')
         });
 
         it("The function should not return the user", async () => {
