@@ -40,7 +40,7 @@ const tokenVerfication = (req: Request, res: Response, next: NextFunction) => {
         const valid = jwt.verify(token, process.env.JSON_SECRET_KEY as unknown as string);
         next();
     } catch(error) {
-        res.status(404);
+        res.status(401);
         res.json({
             msg: 'access token not valid'
         });
