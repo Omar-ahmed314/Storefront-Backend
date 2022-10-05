@@ -10,7 +10,7 @@
     "db-migrate:up": "db-migrate up",
     "db-migrate:down": "db-migrate reset",
     "watch": "npx tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
-    "test": "npm-run-all build db-migrate:up jasmine db-migrate:down -c",
+    "test": "set ENV=test&& npm-run-all build db-migrate:up jasmine db-migrate:down -c",
     "build": "npx tsc"
   },
   "author": "Udacity",
