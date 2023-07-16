@@ -1,5 +1,5 @@
 # Store Front back-end
-Store front is a back-end API that memic store, that store contains customers, product and orders, as a customer you can make a signup and make orders and add some product into it.
+Store front is a back-end service mimics store, that store contains customers, products, and orders, as a customer you can make a signup and make orders and add some product to it.
 
 # How to install
 * Download [Nodejs](https://nodejs.org/en/download/) LTI
